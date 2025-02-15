@@ -1,0 +1,50 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html lang="fr">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" href="urbain_style.css">
+  <title>Programmation fonctionnelle : TP 4</title>
+ </head>
+ <h1>Programmation fonctionnelle : TP 4</h1>
+
+ <h3>Listes polymorphes (le retour)</h3>
+Reprendre l'exercice <em>Liste polymorphes</em> du <a href="tp3.html">TP 3</a>.
+<br>
+Refaire les questions en utilisant cette fois les fonctions <tt>List.fold_XXX</tt> et <tt>List.map</tt>.
+<p></p>
+
+<h3>Minimum et maximum d'une liste</h3>
+<p>
+On cherche à calculer simultanément le minimum et le
+maximum d'une liste d'entiers.
+
+<ul>
+  <li> écrire une fonction récursive <tt>maximum: int
+  list -> int</tt>, qui retourne le plus grand entier de la liste en
+  argument. On conviendra de retourner <tt>min_int</tt> si la liste est
+  vide.</li>
+  <li> écrire une variante de la fonction
+  précédente, basée sur un parcours de liste.</li>
+  <li> écrire une fonction <tt>min_max: int list -> int *
+  int</tt>, qui retourne un couple composé du plus petit et du
+  plus grand entier de la liste passée en argument. On
+  conviendra de retourner <tt>(max_int, min_int)</tt> si la liste est
+  vide.</li>
+</ul>
+</p>
+
+<h3>Minimum et maximum d'une liste, avec moins de comparaisons</h3>
+<p>
+Pour diminuer le nombre de comparaisons à effectuer, on propose
+de :
+<ol>
+    <li> Regrouper les éléments en couples,</li>
+    <li> Trier chaque couple pour mettre le plus petit
+    élément en premier,</li>
+    <li> Chercher le minimum parmi les plus petits de chaque couple, et
+    le maximum parmi les plus grands de chaque couple.</li>
+</ol>
+
+<body>
+</body> </html>

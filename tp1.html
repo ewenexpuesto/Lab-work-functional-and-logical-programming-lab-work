@@ -1,0 +1,136 @@
+<!DOCTYPE HTML>
+<HTML lang="fr">
+ <HEAD>
+  <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <link rel="stylesheet" type="text/css"
+	href="urbain_style.css">
+  
+  <TITLE>TP1 Prog. fonctionnelle
+  </TITLE>
+ </HEAD>
+ <body>
+  <h1>
+   Programmation fonctionnelle, TP1
+  </h1>
+
+
+  <h2>Démarche</h2>
+  <div>
+   Les exercices sont à faire dans la boucle d'interaction ; ils doivent
+   également être compilés en byte code ou en code natif (dans ce cas ne pas essayer
+   d'interagir, donner des valeurs en dur dans le code).
+   <ul> 
+    <li>Bytecode : <code>ocamlc</code> <em>[source].ml</em> <code>-o</code> <em>[exec]</em></li>
+    <li>Natif : <code>ocamlopt</code> <em>[source].ml</em> <code>-o</code> <em>[exec]</em></li>
+   </ul>
+  </div>
+  <div> On remarque que l'exécution d'un objet natif n'affiche rien, il faut
+   donc introduire quelques primitives d'affichage.</div>
+  <div>
+   Pour les entrées/sorties: vous disposez des fonction Format.printf (ou Printf.printf)  pour les sorties. Son fonctionnement est très similaire à celui de son homologue en C mais quelques améliorations sont disponibles. Vous trouverez une documentation sur cette fonction (et ses dérivées) <a href="http://caml.inria.fr/pub/docs/manual-ocaml/libref/Format.html">ici</a>.
+  </div>
+
+
+
+  <div>	Essayer quelques exemples... Comment utiliser les affichages dans une
+   fonction ? Eh bien on peut les voir comme des déclarations locales
+   anonymes par exemple ; c'est ce qu'on utilisera <em>dans un premier temps</em>.
+  </div>
+  <div>
+   Toutes les fonctions doivent être accompagnées de tests pertinents et
+   de commentaires.
+  </div>
+
+
+  <h2>Exercices</h2>
+
+  Vous devez faire au minimum l'exercice 1.
+
+  <h3>Exercice 1</h3>
+  La bibliothèque de floats d'ocaml contient la plupart des fonctions
+  trigonométriques : <code>cos, sin, tan, acos, asin, atan, cosh</code>...
+
+  <ol>
+   <li> Calculer (et afficher) une valeur approchée de &pi; à l'aide de la fonction
+    arctangente.</li>
+
+   <li> Calculer le volume d'une sphère en fonction d'un rayon passé en
+    paramètre.</li>
+
+   <li> Une nouvelle fonction arithmétique : <code>mod</code>
+    <ol>
+     <li> Proposer une fonction qui s'évalue à <code>true</code> si son
+      paramètre est pair, à <code>false</code> si son paramètre est impair.</li>
+     <li> Proposer une fonction qui affiche <code>Pair</code> si son
+      paramètre est pair, <code>Impair</code> si son paramètre est impair.</li>
+     <li> Proposer une fonction qui
+      affiche <code>L'entier </code> <em>n</em> <code>est pair.</code> si son
+      paramètre <em>n</em> est pair, etc.    </li>
+    </ol>
+   </li>	
+   <li> Proposer une fonction qui, sur la donnée de trois entier
+    c<sub>1</sub>, c<sub>2</sub> et h, teste s'ils peuvent représenter
+    les longueurs des côtés d'un triangle rectange d'hypothénuse de
+    longueur h.</li>
+   
+   <li> Proposer une fonction qui, sur la donnée de trois entier
+    c<sub>1</sub>, c<sub>2</sub> et c<sub>3</sub>, teste s'ils peuvent représenter
+    les longueurs des côtés d'un triangle rectange.</li>
+
+   <li> Proposer une fonction qui, sur la donnée d'un pas <em>dx</em>, d'une fonction
+    et d'un point <em>x</em>, calcule une approximation de la dérivée de la
+    fonction en ce point.</li>
+
+   <li> Proposer une fonction qui, sur la donnée de deux
+    fonctions <em>f</em> et  <em>g</em>, retourne la fonction
+    composée <em>f</em>&nbsp;&#9900;&nbsp;<em>g</em>.</li>
+  </ol>
+  <h3>Exercice 2 : Étude du calcul d'une puissance</h3>
+  <div>
+   <ol>
+    <li>Proposer une fonction, qui étant donnés deux entiers
+     <code>x</code> et <code>p (p &gt; 0)</code>, retourne l'entier
+     <code>x<sup>p</sup></code> en utilisant l'équation
+     <div>		    <code>&forall; x, &nbsp; x<sup>0</sup> = 1</code>
+     </div>
+     <div><code>&forall; x, &forall; p &gt; 0, &nbsp; x<sup>p</sup> =
+	  x &times; x<sup>(p-1)</sup></code>
+     </div>
+     <li> Tester cette fonction sur différentes valeurs de
+      <code>x</code> et <code>p</code>, dont au moins une grande valeur pour
+      <code>p</code> (<code>p &gt; 300000</code>).
+      <li> Proposer une fonction, qui étant donnés deux entiers
+       <code>x</code> et <code>p</code>, retourne l'entier <code>x<sup>p</sup></code>
+       en utilisant l'équation
+       <div>
+	<code>&forall; x, &nbsp; x<sup>0</sup> = 1</code>
+       </div> 
+       <div>
+	<code>&forall; x, &forall; p &gt; 0, p pair, &nbsp;
+	  x<sup>p</sup> = (x<sup>(p/2)</sup>)<sup>2</sup></code></div>
+       <div>
+	<code>&forall; x, &forall; p &gt; 0, p impair, &nbsp;
+	  x<sup>p</sup> =
+	  x &times; (x<sup>((p-1)/2)</sup>)<sup>2</sup></code>
+       </div>
+       <li> Tester cette fonction sur les mêmes valeurs que
+	précédemment. 
+   </ol>
+  </div>
+  <h3>Exercice 3</h3>
+  Proposer une fonction de type :
+  <ol><li><code>'a*'b ->'b*'a</code></li>
+   <li> <code>'a -> 'b -> 'a</code></li>
+   <li>  <code> ('a -> 'b -> 'c) -> 'b -> 'a -> 'c</code></li>
+   <li>  <code>('a -> 'b) -> ('a*'c) -> ('b*'c)</code></li>
+   <li> <code>('a -> 'b) -> ('b -> 'a -> 'c) -> 'a -> 'c</code></li>
+  </ol>
+
+ </body>
+</html>
+
+
+
+
+
+

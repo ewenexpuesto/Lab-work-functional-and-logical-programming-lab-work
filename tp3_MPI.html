@@ -1,0 +1,47 @@
+<!DOCTYPE HTML>
+<HTML lang="fr">
+    <head>
+	<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>Programmation fonctionnelle : TP 3</title>
+    </head>
+
+    <body>
+     <h1>Programmation fonctionnelle : TP 3 (extension)</h1>
+
+
+
+<h4>Minimum et maximum d'une liste</h4>
+<p>
+On cherche à calculer simultanément le minimum et le
+maximum d'une liste d'entiers.
+
+<ul>
+  <li> écrire une fonction récursive <tt>maximum: int
+  list -> int</tt>, qui retourne le plus grand entier de la liste en
+  argument. On conviendra de retourner <tt>min_int</tt> si la liste est
+  vide.
+  <li> écrire une variante de la fonction
+  précédente, basée sur un parcours de liste.
+  <li> écrire une fonction <tt>min_max: int list -> int *
+  int</tt>, qui retourne un couple composé du plus petit et du
+  plus grand entier de la liste passée en argument. On
+  conviendra de retourner <tt>(max_int, min_int)</tt> si la liste est
+  vide.
+</ul>
+</p>
+
+<h4>Minimum et maximum d'une liste, avec moins de comparaisons</h4>
+<p>
+Pour diminuer le nombre de comparaisons à effectuer, on propose
+de :
+<ol>
+    <li> Regrouper les éléments en couples,
+    <li> Trier chaque couple pour mettre le plus petit
+    élément en premier,
+    <li> Chercher le minimum parmi les plus petits de chaque couple, et
+    le maximum parmi les plus grands de chaque couple.
+</ol>
+
+
+    </body>
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE HTML>
+<HTML lang="fr">
+    <head>
+	<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>Programmation fonctionnelle : TP 3</title>
+    </head>
+
+    <body>
+     <h1>Programmation fonctionnelle : TP 3</h1>
+
+     <h3>On commence doucement pour éviter un claquage</h3>
+	<p>
+	    Écrire une fonction récursive <code>nbbase: int -> int ->
+	    int</code> telle que <code>nbbase b n</code> retourne le nombre de chiffres
+	    nécessaires à l'écriture de <code>n</code> en base
+	    <code>b</code>.
+	</p>
+
+
+	<h3>Manipulation de listes</h3>
+<h4>Listes polymorphes</h4>
+<p>
+On utilise à présent des listes (polymorphes)
+<ul>
+      <li> Écrire une fonction <tt>ajoute: int -> int list ->
+       int list</tt> telle que <tt>ajoute n l</tt> retourne une liste
+    correspondant à l'ajout de l'élément
+    <tt>n</tt> à la liste <tt>l</tt>.</li>
+    <li> Écrire une fonction <tt>recherche: int -> int list ->
+    bool</tt> telle que <tt>recherche n l</tt> retourne <tt>true</tt>
+    si un élément <tt>n</tt> appartient à la
+    liste <tt>l</tt>, et <tt>false</tt> sinon.
+    <li> Écrire une fonction <tt>existe_pair: int list ->
+     bool</tt>, telle que <tt>existe_pair l</tt> retourne
+    <tt>true</tt> si un élément de <tt>l</tt> est pair,
+    et <tt>false</tt> sinon.</li>
+    <li> Écrire une fonction <tt>supprime: int -> int list ->
+    int list</tt> telle que <tt>supprime n l</tt> retourne une liste
+    d'objets de type <tt>int</tt> correspondant à <tt>l</tt> 
+    sans la première occurrence de <tt>n</tt> (le cas 
+     échéant), et à <tt>l</tt> sinon.</li>
+    <li> Écrire une fonction <tt>supprime_tout: int -> int list
+    -> int list</tt> telle que <tt>supprime_tout n l</tt> retourne une
+     liste correspondant à <tt>l</tt> sans occurrence <tt>n</tt>.</li>
+    <li> Écrire une fonction <tt>inverse: 'a liste -> 'a
+    liste</tt>, qui retourne une liste correspondant à son
+    argument dans l'ordre inverse. Dans un premier temps, on pourra
+     utiliser la fonction de concaténation vue en cours.</li>
+    <li> Écrire la fonction <tt>existe: ('a -> bool) -> 'a
+    liste -> bool</tt>, telle que <tt>existe p l</tt> retourne
+    <tt>true</tt> si un élément de <tt>l</tt>
+    vérifie le prédicat <tt>p</tt>, et <tt>false</tt>
+    sinon.</li>
+</ul>
+</p>
+
+	<h4>Listes d'associations</h4>
+	On travaille maintenant sur des listes de couples associant des objets
+	de type <code>'a</code> à des objets de type <code>'b</code>.
+
+	<ul>
+	    <li> Écrire une fonction <code>recherche_k: 'a -> ('a * 'b) list
+		-> 'b</code>, qui retourne le premier objet de type <code>'b</code>
+		associé à une clé <code>k</code> de type <code>'a</code>.</li>
+	    <li> Écrire une fonction <code>recherche_k': 'a -> ('a * 'b)
+		list -> 'b list</code>, qui retourne la liste de tous les objets de type
+		<code>'b</code> associés à une clé <code>k</code> de
+		type <code>'a</code>.</li>
+	</ul>
+	<h3>Zipper</h3>
+	<p>
+	    Implanter le type des zipper sur liste ainsi que les pricipales fonctions vue en cours.
+	</p>
+	<p>Implanter une fonction <code>print_zipper : ('a -> unit) -> 'a list -> unit</code> permettant d'afficher un <code>zipper</code>
+	</p>
+
+
+    </body>
+</html>

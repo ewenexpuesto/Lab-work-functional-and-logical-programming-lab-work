@@ -1,0 +1,209 @@
+<!DOCTYPE HTML>
+<HTML lang="fr">
+<head>
+  <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <link rel="stylesheet" type="text/css"
+	href="urbain_style.css">
+  <title>Programmation fonctionnelle : TP 2</title>
+</head>
+
+<body>
+  <name>Programmation fonctionnelle : TP 2</name>
+  <h3>Compléments de syntaxe</h3>
+  
+  <p>
+    Comme nous l'avons vu au précédent TP, les entiers sont
+    très différents des flottants. Il est cependant possible
+    de convertir certains types de base en d'autres à l'aide de
+    fonctions prédéfinies.
+    <ul>
+      
+  <li> <tt> float_of_int : int -> float</tt> prend un entier en
+    paramètre et retourne le flottant correspondant. Par exemple,
+    <tt>float_of_int 0</tt> retourne <tt>0.</tt> .
+    
+  <li> <tt>int_of_float : float -> int</tt> retourne la troncature
+    du flottant passé en paramètre. Par exemple,
+    <tt>int_of_float 3.2</tt> retourne <tt>3</tt> et <tt>int_of_float
+  -3.2</tt> retourne <tt>-3</tt> .
+    
+  <li> <tt> string_of_int : float -> string</tt> (resp.
+    <tt>string_of_float : float -> string</tt>) prend un entier
+    (resp. un flottant) en paramètre et retourne la
+    chaîne correspondante. Par exemple, <tt>string_of_float
+      3.2</tt> retourne la valeur <tt>"3.2"</tt> . 
+    
+  <li> <tt>int_of_string : string -> int</tt> (resp.
+  <tt>float_of_string : string -> float</tt>) retourne l'entier
+  (resp. le flottant) correspondant à la chaîne de
+  caractères passée en paramètre. Une erreur
+  survient si la chaîne ne correspond pas à un entier
+  (resp. un flottant). Par exemple, <tt>int_of_string
+  "3"</tt> retourne <tt>3</tt> mais <tt>int_of_string
+  "toto"</tt> retourne une erreur.
+</ul>
+</p>
+
+<p>
+Il existe d'autres fonctions de conversion. De manière
+  générale, les spécifications
+  détaillées de toute la bibliothèque standard
+  Ocaml sont accessibles depuis la page <a
+  href="http://caml.inria.fr">http://caml.inria.fr</a>. 
+</p>
+
+<h3>Enregistrements et couples</h3>
+<p>
+Un rationnel <tt>p/q</tt> peut être représenté
+à l'aide d'un enregistrement ou d'un couple.
+<ul>
+  <li> Proposer un type pour les rationnels en utilisant des
+  enregistrements.
+  <li> écrire une fonction réalisant l'addition de deux
+  rationnels (sans chercher à réduire la fraction
+  obtenue).
+  <li> Proposer un type pour les rationnels en utilisant les couples.
+  <li> écrire une fonction réalisant l'addition de deux
+  rationnels (sans chercher à réduire la fraction
+  obtenue).
+</ul>
+</p>
+
+<h3>Types sommes et types énumérés</h3>
+<h4>Mixité entiers/flottants</h4>
+<p>
+Les entiers (au sens <tt>int</tt>) sont
+très différents des flottants mais les
+définitions de type nous permettent cependant de les
+manipuler en un seul type.
+
+<ul>
+  <li> Définir le type <tt>nombre</tt> (un <tt>nombre</tt> est
+  soit un entier, soit un flottant).
+  <li> Proposer des fonctions permettant d'additionner,
+  de soustraire, de multiplier et de diviser deux nombres.
+  <li> Proposer une fonction permettant de tester si un nombre est plus
+  petit qu'un autre.
+</ul>
+</p>
+
+<!-- <h4>Money (money money...)</h4> -->
+<!-- <p> -->
+<!-- <ul> -->
+<!--   <li> Définir un type énuméré -->
+<!--   <tt>monnaie</tt> permettant de décrire pour les euros les -->
+<!--   pièces (1 centime, 2 centimes, 5 centimes, 10 centimes, 20 -->
+<!--   centimes, 50 centimes, 1 euro, 2 euros) et les billets (5 euros, 10 -->
+<!--   euros, 20 euros et 50 euros). -->
+  
+<!--   <li> Proposer une fonction qui, étant donné un -->
+<!--   élément <tt>m</tt> de type <tt>monnaie</tt>, retourne -->
+<!--   <tt>true</tt> s'il s'agit d'un billet et <tt>false</tt> sinon. -->
+<!--   <li> Proposer une fonction qui, étant donnés un entier -->
+<!--   <tt>s</tt> représentant une certaine somme et un -->
+<!--   élément <tt>m</tt> de type <tt>monnaie</tt>, permet de -->
+<!--   trouver combien d'éléments <tt>m</tt> -->
+<!--   sont nécessaires pour atteindre la somme <tt>s</tt> en -->
+<!--   question. Par exemple, pour atteindre 270 euros avec des billets de -->
+<!--   50 euros, il faut 6 billets tandis qu'avec des billets de 10 euros, -->
+<!--   il en faut 27.   -->
+<!-- </ul> -->
+<!-- </p> -->
+
+<h3>Fonctions récursives</h3>
+
+<h4>Suite de Fibonacci</h4>
+<p>
+La suite de Fibonacci est une suite d'entiers usuellement
+définie comme suit:
+<dl>
+  <dt>
+    <tt>fib(0) = 0 </tt>
+  </dt>
+  <dt>
+    <tt>fib(1) = 1 </tt>
+  </dt>
+  <dt>
+    <tt>&forall; n, &nbsp; fib(n+2)=fib(n+1)+fib(n)</tt>
+  </dt>
+</dl>
+</p>
+<p>
+<ul>
+  <li> Proposer une fonction naïve <tt>fib_naive: int->int</tt> 
+  retournant pour tout entier <tt>n</tt> la valeur <tt>fib(n)</tt>.
+  <li> Tester cette fonction avec les paramètres <tt>0</tt>,
+  <tt>1</tt>, <tt>10</tt> et <tt>40</tt>. Pour <tt>40</tt>, un temps
+  de calcul d'environ une minute est normal.
+</ul>
+
+<p>
+Le temps de calcul important pour des valeurs relativement faibles du
+paramètre peut s'expliquer par le très grand nombre
+d'appels récursifs requis pour cette méthode. En effet,
+pour calculer <tt>fib(n+2)</tt>, il faut calculer <tt>fib(n+1)</tt> et
+<tt>fib(n)</tt>. Mais pour calculer <tt>fib(n+1)</tt>, il faut
+calculer <tt>fib(n)</tt> et <tt>fib(n-1)</tt>. il faut donc effectuer
+de l'ordre de <tt>2<sup>n</sup></tt> opérations pour calculer
+<tt>fib(n)</tt>. On peut cependant calculer cette suite plus
+efficacement (de l'ordre de <tt>n</tt> opérations), en utilisant la
+définition suivante et à l'aide de couples:
+<dl>
+  <dt>
+    <tt>fib_aux(0) = (1, 0) </tt>
+  </dt>
+  <dt>
+    <tt>&forall; n, &nbsp; fib_aux(n+1)=(a+b, a)</tt> si
+    <tt>fib_aux(n)=(a, b)</tt>
+  </dt>
+</dl>
+La valeur de <tt>fib(n)</tt> est alors toujours le second membre du
+couple <tt>fib_aux(n)</tt>.
+
+<ul>
+  <li> Proposer une fonction utilisant cette méthode pour
+  calculer la suite de Fibonacci et comparer les résultats et
+  les temps d'excécution avec ceux obtenus par la
+  première méthode. 
+</ul>
+</p>
+
+<!-- <h3>Listes polymorphes</h3> -->
+<!-- <p> -->
+<!-- On utilise à présent des listes (polymorphes) -->
+<!-- <ul> -->
+<!--       <li> Écrire une fonction <tt>ajoute: int -> int list -> -->
+<!--     int list</tt> telle que <tt>ajoute n l<tt> retourne une liste -->
+<!--     correspondant à l'ajout de l'élément -->
+<!--     <tt>n</tt> à la liste <tt>l</tt>. -->
+<!--     <li> Écrire une fonction <tt>recherche: int -> int list -> -->
+<!--     bool</tt> telle que <tt>recherche n l</tt> retourne <tt>true</tt> -->
+<!--     si un élément <tt>n</tt> appartient à la -->
+<!--     liste <tt>l</tt>, et <tt>false</tt> sinon. -->
+<!--     <li> Écrire une fonction <tt>existe_pair: int list -> -->
+<!--     bool<tt>, telle que <tt>existe_pair l</tt> retourne -->
+<!--     <tt>true</tt> si un élément de <tt>l</tt> est pair, -->
+<!--     et <tt>false</tt> sinon. -->
+<!--     <li> Écrire une fonction <tt>supprime: int -> int list -> -->
+<!--     int list</tt> telle que <tt>supprime n l</tt> retourne une liste -->
+<!--     d'objets de type <tt>int</tt> correspondant à <tt>l</tt>  -->
+<!--     sans la première occurrence de <tt>n</tt> (le cas  -->
+<!--     échéant), et à <tt>l</tt> sinon. -->
+<!--     <li> Écrire une fonction <tt>supprime_tout: int -> int list -->
+<!--     -> int list</tt> telle que <tt>supprime_tout n l</tt> retourne une -->
+<!--     liste correspondant à <tt>l</tt> sans occurrence <tt>n</tt>. -->
+<!--     <li> Écrire une fonction <tt>inverse: 'a liste -> 'a -->
+<!--     liste</tt>, qui retourne une liste correspondant à son -->
+<!--     argument dans l'ordre inverse. Dans un premier temps, on pourra -->
+<!--     utiliser la fonction de concaténation vue en cours. -->
+<!--     <li> Écrire la fonction <tt>existe: ('a -> bool) -> 'a -->
+<!--     liste -> bool</tt>, telle que <tt>existe p l</tt> retourne -->
+<!--     <tt>true</tt> si un élément de <tt>l</tt> -->
+<!--     vérifie le prédicat <tt>p</tt>, et <tt>false</tt> -->
+<!--     sinon. -->
+<!-- </ul> -->
+<!-- </p> -->
+
+
+<address></address>
+</body> </html>
