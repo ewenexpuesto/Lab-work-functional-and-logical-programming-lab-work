@@ -38,7 +38,7 @@ let min_max_divide_tuples = fun l -> let (l1,l2) = tuples l in (minimum l1,maxim
 
 let _ = min_max_divide_tuples [1;3;2;6;3;7;2;3] = (1,7);;
 
-(* inspo : split sort *)
+(* inspo : split sort, tentative échouée *)
 let rec split lst = 
   match lst with
   | [] -> ([], [])
@@ -46,3 +46,4 @@ let rec split lst =
   | x :: y :: rest -> 
       let (left, right) = split rest in
       (x :: left, y :: right)
+;;
