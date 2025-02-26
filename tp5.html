@@ -1,0 +1,156 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html lang="fr">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="urbain_style.css">
+<title>Programmation fonctionnelle : TP 5</title>
+</head>
+
+
+<body>
+  <h1>Programmation fonctionnelle : TP 5</h1>
+
+  <h3>Arbres quaternaires</h3>
+
+    <p>
+      On considère les types suivants :
+      <pre>type color = Black | White </pre>
+      <pre>type 'a quadtree = Leaf of 'a | Node of 'a quadtree * 'a quadtree * 'a quadtree * 'a quadtree</pre>
+    </p>
+
+    <p>
+        Les quadtrees permettent entre autre de représenter efficacement des images en noir et blanc :
+        <ul>
+            <li><code>Leaf Black</code> représente une image complètement noire,</li>
+            <li><code>Leaf White</code> représente une image complètement blanche,</li>
+            <li><code>Node (nw,ne,se,sw)</code> représente une image composée
+                de quatre partie : le nord-ouest <code>nw</code>, le nord-est
+                <code>ne</code>, le sud-est <code>se</code> et enfin le
+                sud-ouest <code>sw</code>. Ces parties sont elles-mêmes des
+                arbres quaternaires.
+            </li>
+        </ul>
+    </p>
+
+    <p>
+        Par exemple, l'image
+
+        <svg width="5em" height="5em" viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg">
+            <rect x="1" y="1" width="8" height="8" style="stroke:#000000;fill:#ffffff;stroke-width:0.1;" />
+            <rect x="1" y="1" width="4" height="4" style="fill:#000000;" />
+            <rect x="3" y="5" width="2" height="4" style="fill:#000000;" /> 
+            <rect x="6" y="5" width="1" height="1" style="fill:#000000;" /> 
+        </svg>
+
+        peut être représentée par l'arbre quaternaire suivant :<pre>
+    Node ( Leaf Black
+         , Leaf White
+         , Node (Node (Leaf White, Leaf Black, Leaf White, Leaf White), Leaf White, Leaf White, Leaf White)
+         , Node (Leaf White, Leaf Black, Leaf Black, Leaf White)
+         )
+        </pre>
+    </p>
+
+    <ol>
+        <li>Écrire une fonction <code>mirrorV : 'a quadtree -> 'a quadtree</code>
+            qui construit la symétrie verticale de l'image
+            représentée par l'arbre quaternaire passé en argument.<br/>
+
+         Par exemple, 
+	 <svg width="5em" height="5em" viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg">
+            <rect x="1" y="1" width="8" height="8" style="stroke:#000000;fill:#ffffff;stroke-width:0.1;" />
+            <rect x="1" y="1" width="4" height="4" style="fill:#000000;" />
+            <rect x="3" y="5" width="2" height="4" style="fill:#000000;" /> 
+            <rect x="6" y="5" width="1" height="1" style="fill:#000000;" /> 
+            <line x1="5" y1="0" x2="5" y2="10" style="stroke:#ff0000;stroke-width:0.2;" />
+        </svg>
+        devient
+        <svg width="5em" height="5em" viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg">
+            <rect x="1" y="1" width="8" height="8" style="stroke:#000000;fill:#ffffff;stroke-width:0.1;" />
+            <rect x="5" y="1" width="4" height="4" style="fill:#000000;" />
+            <rect x="5" y="5" width="2" height="4" style="fill:#000000;" /> 
+            <rect x="3" y="5" width="1" height="1" style="fill:#000000;" /> 
+            <line x1="5" y1="0" x2="5" y2="10" style="stroke:#ff0000;stroke-width:0.2;" />
+        </svg>.
+        </li>
+
+        <li>Écrire une fonction <code>rotate : 'a quadtree -> 'a quadtree</code>
+            qui prend une image représentée par un arbre quaternaire en argument,
+            et qui renvoie cette image tournée de 90 degrés dans le sens direct.<br/>
+
+            Par exemple, 
+        <svg width="5em" height="5em" viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg">
+            <rect x="1" y="1" width="8" height="8" style="stroke:#000000;fill:#ffffff;stroke-width:0.1;" />
+            <rect x="1" y="1" width="4" height="4" style="fill:#000000;" />
+            <rect x="3" y="5" width="2" height="4" style="fill:#000000;" /> 
+            <rect x="6" y="5" width="1" height="1" style="fill:#000000;" /> 
+        </svg>
+        devient
+        <svg width="5em" height="5em" viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg">
+         <rect x="1" y="1" width="8" height="8" style="stroke:#000000;fill:#ffffff;stroke-width:0.1;" />
+         <rect x="1" y="5" width="4" height="4" style="fill:#000000;" />
+         <rect x="5" y="5" width="4" height="2" style="fill:#000000;" /> 
+         <rect x="5" y="3" width="1" height="1" style="fill:#000000;" /> 
+        </svg>.
+        </li>
+	<li>
+	 Proposer une fonction <code>chessboard : int -> color quadtree</code> qui, sur la donnée d'un entier <code>n>0</code> construit un échiquier de taille <code>2<sup>n</sup> x 2<sup>n</sup></code>.<br>
+	 La case en haut à gauche sera noire.
+	 
+	</li>
+
+        <li>Écrire une fonction <code>density : color quadtree -> double</code>
+            qui retourne la proportion de noir dans l'image représentée par
+            l'arbre quaternaire passé en argument.
+        </li>
+
+        <li>Écrire une fonction <code>apply : ('a  quadtree -> 'a quadtree) list -> 'a  quadtree -> 'a quadtree</code>
+            telle que <code>apply [f1; ...; fn] img</code> renvoie l'image obtenue
+            à partir de <code>img</code> en appliquant successivement <code>f1</code>,
+            <code>...</code>, <code>fn</code>.
+        </li>
+        
+        <li>En utilisant ce qui précède, et notamment <code>apply</code>, définir
+            les fonctions suivantes :
+            <ul>
+             <li><code>rotate_clockwise: 'a quadtree -> 'a quadtree</code> pour la rotation de 90 degrés
+                dans le sens des aiguilles d'une montre,</li>
+                <li><code>mirrorH: 'a quadtree -> 'a quadtree</code> pour la symétrie horizontale.</li>
+            </ul>
+        </li>
+    </ol>
+
+  
+    <h3>Expressions arithmétiques</h3>
+
+    On définit les expressions arithmétiques à l'aide du type suivant :
+    <pre>
+    type expr =
+      | Nb of int | Plus of expr * expr
+      | Mult of expr * expr | Minus of expr * expr
+    </pre>
+    <ol>
+        <li>Représenter l’expression <code>(1 + 4) ∗ 3 − 5</code> en utilisant le
+            type précédent.
+        </li>
+        <li>Proposer une fonction <code>nb_op : expr -> int</code> qui calcule le nombre
+            d'opérations arithmétiques a effectuer pour évaluer une expression.
+        </li>
+        <li>Écrire la fonction <code>eval: expr -> int</code> qui calcule
+            la valeur entière d’une expression.
+        </li>
+        <li>Proposer une fonction <code>nb_null : expr -> int</code> qui calcule
+            le nombre de sous-expressions qui s'évaluent à 0.
+        </li>
+    </ol>
+
+
+<!-- <h3>Arbres binaires</h3> -->
+
+<!-- <p> Chaque nœud d'un arbre binaire polymorphe possède une valeur, un -->
+<!-- sous-arbre gauche et un sous-arbre droit.  </p> -->
+
+<!-- <p></p> -->
+
+</body> </html>
