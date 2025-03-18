@@ -84,3 +84,21 @@ let _ = fib 0;;
 let _ = fib 1;;
 let _ = fib 10;;
 let _ = fib 40;;
+
+(* Fonction récursive terminale de factorielle *)
+let factorial n =
+  let rec aux n acc =
+    if n <= 1 then acc
+    else aux (n - 1) (n * acc)
+  in
+  aux n 1
+;;
+
+(* Fonction récursive terminale fibonacci *)
+let fibonacci n =
+  let rec aux n a b =
+    if n = 0 then a
+    else aux (n - 1) b (a + b)
+  in
+  aux n 0 1
+;;
