@@ -1,0 +1,208 @@
+\documentclass[a4paper,12pt]{article}
+
+% Packages utiles
+\usepackage[utf8]{inputenc}
+\usepackage[french]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{geometry}
+\usepackage{tcolorbox}
+\usepackage{enumitem}
+\newtcolorbox{warningbox}{
+  colback=yellow!10!white,
+  colframe=yellow!50!black,
+  title=Warning,
+  fonttitle=\bfseries
+}
+\newtcolorbox{notebox}{
+  colback=blue!5!white,    % Light blue background
+  colframe=blue!50!black,  % Dark blue border
+  title=Note,              % Title of the box
+  fonttitle=\bfseries      % Bold title
+}
+\lstdefinelanguage{config}{
+  morecomment=[l]{\#},    % Line comments starting with #
+  morecomment=[l]{;},     % Line comments starting with ;
+  morestring=[b]",        % Strings in double quotes
+  moredelim=*[s][\color{red}]{[}{]}, % Sections in red
+  keywords={},            % No specific keywords
+  keywordstyle=\color{blue}\bfseries,
+  basicstyle=\ttfamily\small,
+  commentstyle=\color{gray}\itshape,
+  stringstyle=\color{green},
+}
+
+% Configuration de la page
+\geometry{margin=2cm}
+
+% Configuration des listings pour le code
+\lstset{
+  backgroundcolor=\color{gray!10},
+  basicstyle=\ttfamily\small,
+  breaklines=true,
+  captionpos=b,
+  commentstyle=\color{green!50!black},
+  keywordstyle=\color{blue},
+  stringstyle=\color{red},
+  numberstyle=\tiny\color{gray},
+  numbers=left,
+  frame=single,
+  tabsize=2,
+  inputencoding=utf8,
+  extendedchars=true,
+  literate={é}{{\'e}}1 {è}{{\`e}}1 {à}{{\`a}}1 {ç}{{\c{c}}}1 {ù}{{\`u}}1
+}
+
+\title{Editeur de texte \includegraphics[width=0.13\textwidth]{OCaml_Logo.jpg}}
+\author{Ewen Expuesto}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+\newpage
+
+\section{Introduction}
+Le but est de construire un éditeur de texte. La partie graphique est gérée par le module \texttt{Graphics} d'Ocaml. Grâce à la proposition de structure de données utilisant les buffers et lignes, on peut implémenter les fonctions gérant les touches pressées sur le clavier.
+
+J'ai commencé à implémenter les fonctions de base qui permettent le déplacement du curseur, l'insertion et la suppression d'un caractère et le saut de ligne. Dans le fichier \texttt{projet.ml}, il y a deux versions de chaque fonction. La première est l'implémentation primitive qui respecte les premières limitations fixées dans le sujet. La deuxième est celle qui améliore l'ergonomie des déplacements et des suppressions.
+
+\section{Choix de conception}
+
+\subsection{Typage}
+Au début, je n'avais pas compris pourquoi il y avait aussi des types \texttt{buf} pour \texttt{move\_left} et \texttt{move\_right}. Je m'apprêtais à modifier les parties qu'il ne fallait pas modifier, pour changer en \texttt{line}, mais je me suis arrêté. C'est en comprenant pleinement la remarque qui proposait d'utiliser une combinaison de fonctions génériques et \texttt{update\_with} que j'ai commencé à l'utiliser abondamment.
+
+\subsection{Suppression d'un caractère \texttt{entrée}}
+J'ai implémenté la possibilité de faire \texttt{backspace} et \texttt{suppr} même quand le caractère précédent ou suivant est \texttt{entrée} : cela déplace toute une ligne. Pour cela, la fonction \texttt{do\_suppr} regarde s'il n'y a pas de caractères à la suite du caractère sur lequel le curseur est présent. Dans ce cas, elle concatène intelligemment la ligne courante et la ligne suivante. Elle rassemble d'abord les \texttt{before} et \texttt{after} de la ligne suivante après les avoir mis dans l'ordre de la phrase avec \texttt{List.rev}. Ensuite, la fonction \texttt{do\_suppr} rassemble le tout dans une même ligne.
+
+\begin{lstlisting}[language=Caml, caption=Extrait de l'implémentation ergonomique de la suppression avec \texttt{do\_suppr}]
+match buf.current.after with
+  | [] -> (
+      match buf.after with
+      | [] -> buf
+      | next_line :: next_rest ->
+          let merged_after = (List.rev next_line.before) @ next_line.after in
+          let merged_line = {
+            before = buf.current.before;
+            current = Cursor;
+            after = merged_after;
+            pos = buf.current.pos
+          } in
+          {
+            before = buf.before;
+            current = merged_line;
+            after = next_rest;
+            pos = buf.pos
+          }
+    )
+\end{lstlisting}
+
+\subsection{Saut de ligne avec \texttt{move\_right} et \texttt{move\_left}}
+J'ai implémenté la possibilité de descendre à la ligne de dessous quand on va à droite à la fin d'une ligne. Puis symétriquement pour la gauche. Pour cela, on reprend l'idée précédente de merge du \texttt{before} et \texttt{after}, mais ici de la ligne suivante.
+\begin{lstlisting}[language=Caml, caption=Extrait de code de la fonction \texttt{move\_left}]
+match buf.current.before with
+  | [] -> (
+      match buf.before with
+      | [] -> buf
+      | prev_line :: rest ->
+          let merged_before = (List.rev prev_line.before) @ prev_line.after in
+          let new_pos = List.length merged_before in
+          let current_line = get_current buf in
+          {
+            before = rest;
+            current = {
+              before = List.rev merged_before;
+              current = Cursor;
+              after = [];
+              pos = new_pos
+            };
+            after = {before = []; current = Cursor; after = (List.rev current_line.before) @ current_line.after; pos = 0} :: buf.after;
+            pos = buf.pos - 1
+          }
+    )
+\end{lstlisting}
+
+\subsection{Déplacement avec \texttt{move\_down} et \texttt{move\_up}}
+J'ai implémenté, de manière similaire à précédemment, la possibilité d'aller en fin de ligne quand on va en bas en fin de buffer, et symétriquement en haut dans les fonctions \texttt{move\_up} et \texttt{move\_down}.
+
+\subsection{Consistence du déplacement du curseur en haut et en bas}
+Jusque-là, lorsque l'on descend ou monte une ligne en déplaçant le curseur d'une ligne en haut ou en bas, le position du curseur pour une ligne est sauvegardée dans cette ligne. Ainsi, si on se place au début d'une ligne, que l'on descend, puis que l'on bouge à droite et enfin que l'on remonte, on sera ramené au début de la première ligne. Pourtant il est courant dans les éditeurs de texte d'avoir une position du curseur consistante au fil du déplacement le long des lignes.
+\begin{lstlisting}[language=Caml, caption=Implémentation du déplacement ligne en ligne ergonomique extrait de \texttt{move\_up}]
+match buf.before with
+  | prev_line :: rest_before ->
+      let new_after = buf.current :: buf.after in
+      let new_pos = buf.pos - 1 in
+      let new_current_before_rev, new_current_after = split_at (get_pos buf.current) ((List.rev prev_line.before) @ prev_line.after) in
+      let new_current_before = List.rev new_current_before_rev in
+      {
+        before = rest_before;
+        current = {before = new_current_before; current = Cursor; after = new_current_after; pos = get_pos buf.current};
+        after = new_after;
+        pos = new_pos
+      }
+;;
+\end{lstlisting}
+
+\subsection{Retour en début de ligne}
+Enfin j'ai implémenté le déplacement au début de la première ligne si l'on déplace le curseur vers le haut en haut en étant sur la première ligne du buffer. Et similairement en bas du buffer.
+
+\begin{lstlisting}[language=Caml, caption=Implémentation du retour en début de ligne en début de buffer dans \texttt{move\_up}]
+match buf.before with
+  | [] ->
+      update_with (fun line -> {
+        before = [];
+        current = Cursor;
+        after = (List.rev line.before) @ line.after;
+        pos = List.length (line.before @ line.after);
+      }) buf
+\end{lstlisting}
+
+\section{Limites}
+Le programme pourrait bénéficier : 
+\begin{itemize}
+  \item D'une \textbf{interface graphique} plus jolies et adaptée à la taille de l'écran
+  \item De l'implémentation de toutes les touches
+  \item De la possibilité de l'\textbf{utilisation du curseur} pour le déplacement et la mise en surbrillance
+\end{itemize}
+
+\section{Tests}
+
+\section{Manuel d'utilisation}
+\begin {itemize}
+    \item Version d'Ocaml conseillée : 4.08.0 car elle contient le module \texttt{Graphics} par défaut à télécharger avec \texttt{apt install ocaml} 
+    \item Ou bien toute autre version récente en installant le module \texttt{Graphics} avec \texttt{opam install graphics}
+    \item Ouvrir un terminal et se placer dans le répertoire du projet
+    \item Construire l'exécutable dans le terminal avec \texttt{make}, si cela ne fonctionne pas, commenter l'une des ligne 6/7 et décommenter l'autre dans le Makefile
+    \item Lancer le programme dans le terminal : \texttt{./test}
+\end{itemize}
+
+\begin{table}[htbp]
+  \centering
+  \begin{tabular}{|l|l|}
+  \hline
+  Touches (simultanées) & Action \\
+  \hline
+  Control q & déplacement du curseur d'un caractère vers la gauche \\
+  \hline
+  Control d & déplacement du curseur d'un caractère vers la droite \\
+  \hline
+  Control z & déplacement du curseur d'un caractère vers le haut \\
+  \hline
+  Control s & déplacement du curseur d'un caractère vers le bas \\
+  \hline
+  Backspace & effacement du caractère précédent \\
+  \hline
+  Delete & effacement du caractère courant \\
+  \hline
+  Escape & arrêt du programme \\
+  \hline
+  \end{tabular}
+\end{table}
+
+\end{document}
