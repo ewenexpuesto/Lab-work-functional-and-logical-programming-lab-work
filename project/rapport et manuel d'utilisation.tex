@@ -172,6 +172,11 @@ Le programme pourrait bénéficier :
 \end{itemize}
 
 \section{Tests}
+Pour exécuter le fichier \texttt{test.ml}, il est possible d'utiliser l'interpréteur directement en exécutant \texttt{ocaml test.ml} dans le terminal. Il est aussi possible de le compiler avec \texttt{ocamlc -o test\_file test.ml} et de l'exécuter avec \texttt{./test\_file}. Ces deux méthodes permettent d'afficher dans le terminal les résultats des tests.
+
+Les tests m'ont permis de détecter une erreur dans la fonction \texttt{move\_up} qui n'influençait pas la vue graphique mais la structure de données. En effet, je mettais mal à jour la variable \texttt{pos} du curseur.
+
+\newpage
 
 \section{Manuel d'utilisation}
 \begin {itemize}
